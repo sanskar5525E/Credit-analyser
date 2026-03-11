@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit anayler | Track Overdue Payments for Wholesale Businesses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg: #fff;
+            --dark-blue: #1d4ed8;
+            --light-blue: #dbeafe;
+            --gray: #f8fafc;
+            --text-dark: #0f172a;
+            --text-light: #1a222c;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 80px rgba(0, 0, 0, 0.15);
+            --green: #059669;
+            --yellow: #d97706;
+            --red: #dc2626;
+            --border: #e2e8f0;
+            --gradient: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f0f23;
+            --dark-blue: #60a5fa;
+            --light-blue: #1e40af;
+            --gray: #1e293b;
+            --text-dark: #f8fafc;
+            --text-light: #cbd5e1;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 25px 80px rgba(0, 0, 0, 0.5);
+            --green: #34d399;
+            --yellow: #fbbf24;
+            --red: #f87171;
+            --border: #334155;
+            --gradient: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: all 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(15, 15, 35, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem; /* Added gap for better spacing */
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+
+        /* New navigation links styles */
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 0 0.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-blue);
+        }
+
+        .theme-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-blue);
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .theme-btn:hover {
+            background: var(--light-blue);
+            transform: scale(1.1);
+        }
+
+        /* Mobile friendly header */
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+                margin-right: auto; /* keep logo left on mobile */
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            .theme-btn {
+                margin-left: auto; /* keep toggle right */
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 0.8rem;
+            }
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+        }
+
+        section {
+            padding: 5rem 0 3rem;
+        }
+
+        .hero {
+            padding-top: 8rem !important;
+            background: var(--gray);
+        }
+
+        .light-bg {
+            background: var(--gray);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .subhead {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            margin: 0.5rem;
+            min-height: 56px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark-blue);
+            border-color: var(--dark-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .trust-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--green);
+        }
+
+        .trust-item i {
+            font-size: 1.2rem;
+        }
+
+        .grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .cols-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .cols-3 {
+            grid-template-columns: 1fr;
+        }
+
+        .cols-4 {
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .card {
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: var(--dark-blue);
+            box-shadow: var(--shadow);
+        }
+
+        .dashboard-mock {
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark-blue);
+        }
+
+        .risk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .risk-tag {
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .risk-safe {
+            background: rgba(5, 150, 105, 0.15);
+            color: var(--green);
+        }
+
+        .risk-warning {
+            background: rgba(217, 119, 6, 0.15);
+            color: var(--yellow);
+        }
+
+        .risk-high {
+            background: rgba(220, 38, 38, 0.15);
+            color: var(--red);
+        }
+
+        .urgency {
+            background: var(--red);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            margin: 2rem 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .problem-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg);
+            border-radius: 16px;
+            border-left: 5px solid var(--red);
+            box-shadow: var(--shadow);
+        }
+
+        .problem-icon {
+            color: var(--red);
+            font-size: 1.5rem;
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .social-proof {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .proof-card {
+            background: var(--bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border-left: 5px solid var(--green);
+            box-shadow: var(--shadow);
+        }
+
+        .stars {
+            color: var(--yellow);
+            font-size: 1.2rem;
+        }
+
+        .contact-row {
+            display: grid;
+            gap: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: var(--bg);
+            color: var(--text-dark);
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--dark-blue);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            font-weight: 700;
+            padding: 1.2rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        footer {
+            background: var(--gray);
+            padding: 3rem 0 1.5rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            section {
+                padding: 3rem 0 2rem;
+            }
+
+            .hero {
+                padding-top: 6rem !important;
+            }
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media(min-width:768px) {
+            .screenshot-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .screenshot-card {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .screenshot-title {
+            font-weight: 600;
+            margin-top: 0.8rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Credit analyser</div>
+            <!-- New navigation links added here: Home, Recover Payments, Contact -->
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#steps">Recover Payments</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+        </nav>
+    </header>
+
+    <!-- ATTENTION: Hero with Pain + Promise -->
+    <section class="hero">
+        <div class="container">
+            <h1>Late Payments? Get Your Money Back 30% Faster</h1>
+            <p class="subhead">Selling on credit to retailers? Track overdue payments and identify risky customers
+                before losses grow.Our smart dashboard spots risky buyers instantly. Designed for wholesale distributors
+                managing credit sales.</p>
+            <div class="trust-bar">
+                <div class="trust-item"><i class="fas fa-users"></i> Built for Wholesale Businesses</div>
+                <div class="trust-item"><i class="fas fa-chart-line"></i> Track Overdue Payments Easily</div>
+                <div class="trust-item"><i class="fas fa-file-excel"></i> Works with Your Excel Data</div>
+            </div>
+            <div class="btn-group">
+                <a href="https://credit-system-demo.streamlit.app/" class="btn btn-primary"><i
+                        class="fas fa-rocket"></i> Try Free Demo Now</a>
+                <a href="#contact" class="btn btn-secondary"><i class="fas fa-chat"></i> Get Free Trial</a>
+            </div>
+            <div class="dashboard-mock">
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Total Due</div>
+                        <div class="metric-value">₹2.8L</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Overdue</div>
+                        <div class="metric-value">₹47k</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Risky Shops</div>
+                        <div class="metric-value">12</div>
+                    </div>
+                </div>
+                <div class="risk-tags">
+                    <span class="risk-tag risk-safe">✅ Safe customers(24)</span>
+                    <span class="risk-tag risk-warning">⚠️ Warning(8)</span>
+                    <span class="risk-tag risk-high">🚨 High risk costumer (5)</span>
+                </div>
+            </div>
+            <div class="urgency">Limited: First 20 signups get 7 days FREE! Ends soon.</div>
+        </div>
+    </section>
+
+    <!-- INTEREST: Problems (Empathy) -->
+    <section>
+        <div class="container">
+            <h2>Common Problems in Credit Sales</h2>
+            <div class="problem-list">
+                <div class="problem-item">
+                    <i class="fas fa-clock problem-icon"></i>
+                    <p>Shops promise "pay tomorrow" but take months. Your cash stuck!</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-list-check problem-icon"></i>
+                    <p>100s of bills in messy Excel. Can't spot late payers fast.</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-exclamation-triangle problem-icon"></i>
+                    <p>Give credit to bad shops again. Lose more money.</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-rupee-sign problem-icon"></i>
+                    <p>No money for new stock. Business stops growing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESIRE: Solution + Social Proof - added id="steps" for navigation -->
+    <section class="light-bg" id="steps">
+        <div class="container">
+            <h2>Recover Payments in 3 Easy Steps</h2>
+            <div class="grid cols-3">
+                <div class="card">
+                    <div class="step-number">1</div>
+                    <h3>Upload Excel</h3>
+                    <p>Drag your bill file. No setup needed.</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">2</div>
+                    <h3>Get Smart Scan</h3>
+                    <p>Instant payment risk analysis</p>
+                </div>
+                <div class="card">
+                    <div class="step-number">3</div>
+                    <h3>See Clear Advice</h3>
+                    <p>Green/Red labels + action tips.</p>
+                </div>
+            </div>
+            <section>
+                <div class="container">
+                    <h2 style="text-align:center;">See the Dashboard in Action</h2>
+                    <p class="subhead">A simple dashboard to monitor overdue payments and customer risk.</p>
+
+                    <div class="screenshot-grid">
+
+                        <div class="screenshot-card">
+                            <img src="images/simmary.png" alt="Dashboard overview">
+                            <div class="screenshot-title">Outstanding & Overdue Overview</div>
+                        </div>
+
+                        <div class="screenshot-card">
+                            <img src="images/2.png" alt="Customer risk analysis">
+                            <div class="screenshot-title">Customer Risk Analysis</div>
+                        </div>
+
+                        <div class="screenshot-card">
+                            <img src="images/3.png" alt="Payment tracking">
+                            <div class="screenshot-title">Risk distribution</div>
+                        </div>
+
+                        <div class="screenshot-card">
+                            <img src="images/4.png" alt="Excel upload">
+                            <div class="screenshot-title">Make smarter decisions with customer-specific actions.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <div class="social-proof">
+                <div class="proof-card">
+                    <p>Helps wholesalers track overdue bills and risky customers in one place.</p>
+                </div>
+                <div class="proof-card">
+                    <p>Simple dashboard designed for distributors selling on credit.</p>
+                </div>
+                <div class="proof-card">
+                    <p>Upload your Excel file and quickly identify delayed payments.</p>
+                </div>
+            </div>
+
+
+            <!-- ACTION: CTA + Contact -->
+            <section>
+                <div class="container text-center">
+                    <h2>Start Recovering Today – Free Demo Ready</h2>
+                    <p class="subhead">Stop cash flow leaks from late-paying retailers. Built for wholesalers. No card needed.</p>
+                    <div class="btn-group">
+                        <a href="https://credit-system-demo.streamlit.app/" class="btn btn-primary"><i
+                                class="fas fa-play"></i> View Dashboard Demo</a>
+                        <a href="#contact" class="btn btn-secondary"><i class="fas fa-phone"></i> Contact Now</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="light-bg">
+                <div class="container">
+                    <h2>Get Your Free Trial Setup</h2>
+                    <div class="contact-row">
+                        <div class="card">
+                            <p><i class="fas fa-phone fa-2x"
+                                    style="color: var(--green); margin-bottom: 1rem; display: block;"></i> +91
+                                9439493613</p>
+                            <p><i class="fas fa-envelope fa-2x"
+                                    style="color: var(--dark-blue); margin-bottom: 1rem; display: block;"></i>
+                                taskflowindia@gmail.com</p>
+                            <p><i class="fab fa-whatsapp fa-2x"
+                                    style="color: var(--green); margin-bottom: 1rem; display: block;"></i> Chat Now</p>
+                            <p><strong>Reply in 30 mins | Mon-Sat 9am-7pm IST</strong></p>
+                        </div>
+                       <form class = "card" target="_blank" action="https://formsubmit.co/taskflowindia@gmail.com" method="POST">
+                            <div class="form-group"><input type="text" placeholder="Your Name"></div>
+                            <div class="form-group"><input type="email" placeholder="Business Email"></div>
+                            <div class="form-group"><input type="tel" placeholder="Phone (Optional)"></div>
+                            <div class="form-group"><textarea rows="4"
+                                    placeholder="How much overdue money do you have? We'll help!"></textarea></div>
+                            <button class="btn-submit" type="submit">Start Free Trial <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <p><strong>Credit system analyser</strong> Credit Tracking Tool for Wholesale Businessess</p>
+                    <p>&copy; 2026 Credit Helper. Helping MSMEs recover payments daily. | <a href="#privacy">Privacy</a>
+                    </p>
+                </div>
+            </footer>
+
+            <script>
+                const toggle = document.getElementById('themeToggle');
+                const body = document.body;
+                toggle.addEventListener('click', () => {
+                    const isDark = body.dataset.theme === 'dark';
+                    body.dataset.theme = isDark ? 'light' : 'dark';
+                    const icon = toggle.querySelector('i');
+                    icon.classList.toggle('fa-moon');
+                    icon.classList.toggle('fa-sun');
+                });
+            </script>
+</body>
+
+</html>
