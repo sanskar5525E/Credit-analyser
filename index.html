@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credt anayler | Track Overdue Payments for Wholesale Businesses</title>
+    <title>Credit anayler | Track Overdue Payments for Wholesale Businesses</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -596,6 +596,44 @@
             text-align: center;
             color: var(--text-light);
         }
+        /* ... all existing styles up to the media queries ... */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  section {
+    padding: 3rem 0 2rem;
+  }
+
+  .hero {
+    padding-top: 12rem !important;  /* Increased from 6rem to avoid header overlap */
+  }
+
+  /* Optional: reduce header padding slightly on small screens */
+  header {
+    padding: 0.5rem 0;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 0.5rem; /* Tighter gap for very small screens */
+  }
+  .nav-links a {
+    font-size: 0.8rem; /* Slightly smaller text */
+  }
+  .hero {
+    padding-top: 14rem !important; /* Even more space if needed */
+  }
+}
+
+/* Ensure anchor links are not hidden under the fixed header */
+section[id] {
+  scroll-margin-top: 80px; /* Adjust based on header height */
+}
     </style>
 </head>
 
