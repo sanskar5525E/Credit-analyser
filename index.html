@@ -910,7 +910,7 @@
   </p>
 
   <div class="hero-actions">
-    <a href="https://creditsystemv1.streamlit.app" target="_blank" class="btn-primary">
+    <a href="https://creditpulse-demo.streamlit.app" target="_blank" class="btn-primary">
       ⚡ Try Live Demo
     </a>
     <a href="#contact" class="btn-secondary">
@@ -1161,35 +1161,20 @@
     <h2 class="section-title reveal">Book a Demo or Get in Touch</h2>
     <p class="section-sub reveal" style="margin:0 auto">Whether you want to try CreditPulse for your business or hire me for a project — fill this form and I'll reply within 24 hours.</p>
 
-    <form
-      class="contact-form reveal"
-      id="contactForm"
-      action="https://formsubmit.co/sanskarjyoti45@gmail.com"
-      method="POST"
-    >
-      <!-- FormSubmit config — no captcha, custom subject, redirect back -->
-      <input type="hidden" name="_captcha" value="false"/>
-      <input type="hidden" name="_subject" value="New CreditPulse Enquiry 🚀"/>
-      <input type="hidden" name="_next" value="https://creditsystemv1.streamlit.app"/>
-      <input type="hidden" name="_template" value="table"/>
-
+    <form class="contact-form reveal" id="contactForm">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Your Name</label>
-          <input type="text" name="name" class="form-input" placeholder="Rajan Gupta" required/>
+          <input type="text" id="f_name" class="form-input" placeholder="Rajan Gupta" required/>
         </div>
         <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" name="email" class="form-input" placeholder="rajan@example.com" required/>
+          <label class="form-label">Business Name</label>
+          <input type="text" id="f_biz" class="form-input" placeholder="Rajan Traders, Nagpur"/>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Business Name</label>
-        <input type="text" name="business" class="form-input" placeholder="Rajan Traders, Nagpur"/>
       </div>
       <div class="form-group">
         <label class="form-label">I am interested in</label>
-        <select name="interest" class="form-select">
+        <select id="f_interest" class="form-select">
           <option>CreditPulse for my wholesale business</option>
           <option>Custom dashboard / automation for my business</option>
           <option>Both — CreditPulse + custom work</option>
@@ -1198,13 +1183,13 @@
       </div>
       <div class="form-group">
         <label class="form-label">Message (optional)</label>
-        <textarea name="message" class="form-textarea" placeholder="Tell me about your business — how many customers, what software you use, what problem you want to solve..."></textarea>
+        <textarea id="f_msg" class="form-textarea" placeholder="Tell me about your business — how many customers, what software you use, what problem you want to solve..."></textarea>
       </div>
-      <button type="submit" class="form-submit">Send Message →</button>
+      <button type="submit" class="form-submit">💬 Send on WhatsApp →</button>
     </form>
 
     <div class="form-success" id="formSuccess">
-      ✓ Message sent! I'll reply to your email within 24 hours.
+      ✓ Opening WhatsApp — message is pre-filled for you!
     </div>
   </div>
 </section>
@@ -1213,7 +1198,8 @@
 <footer>
   <div class="footer-copy">© 2026 CreditPulse · Built by Sanskar</div>
   <div class="footer-links">
-    <a href="https://creditsystemv1.streamlit.app" target="_blank">Live App</a>
+    <a href="https://creditpulse-demo.streamlit.app" target="_blank">Live Demo</a>
+    <a href="https://wa.me/919439493613?text=Hi%20Sanskar!%20I%20found%20CreditPulse%20and%20want%20to%20know%20more." target="_blank">WhatsApp</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
   </div>
@@ -1282,6 +1268,25 @@
 
   const rv = document.getElementById('riskVisual');
   if (rv) riskObs.observe(rv);
+
+  // ── WhatsApp Form ──────────────────────────────────────────────────────────
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name     = document.getElementById('f_name').value.trim();
+    const biz      = document.getElementById('f_biz').value.trim();
+    const interest = document.getElementById('f_interest').value;
+    const msg      = document.getElementById('f_msg').value.trim();
+    const text     = encodeURIComponent(
+      'Hi Sanskar! I found CreditPulse.\n\n' +
+      'Name: ' + name + '\n' +
+      (biz   ? 'Business: ' + biz + '\n' : '') +
+      'Interested in: ' + interest + '\n' +
+      (msg   ? 'Message: ' + msg : '')
+    );
+    window.open('https://wa.me/919439493613?text=' + text, '_blank');
+    this.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
 
   // ── Smooth scroll for nav links ────────────────────────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(a => {
