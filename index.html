@@ -1113,7 +1113,7 @@
       <div class="about-card reveal">
         <div class="about-avatar">👨‍💻</div>
         <div class="about-name">Sanskar</div>
-        <div class="about-role">Builder · Age 15 · Odisha</div>
+        <div class="about-role">Builder · Age 15 · Bhubaneswar</div>
         <div class="about-bio">
           Been coding and building real products for 2 years. CreditPulse started from one question — why do Indian wholesalers still track bad debt in notebooks? Built the entire app from scratch: risk engine, database, login system, call scripts, everything.
         </div>
@@ -1161,24 +1161,35 @@
     <h2 class="section-title reveal">Book a Demo or Get in Touch</h2>
     <p class="section-sub reveal" style="margin:0 auto">Whether you want to try CreditPulse for your business or hire me for a project — fill this form and I'll reply within 24 hours.</p>
 
-    <form class="contact-form reveal" id="contactForm">
+    <form
+      class="contact-form reveal"
+      id="contactForm"
+      action="https://formsubmit.co/sanskarjyoti45@gmail.com"
+      method="POST"
+    >
+      <!-- FormSubmit config — no captcha, custom subject, redirect back -->
+      <input type="hidden" name="_captcha" value="false"/>
+      <input type="hidden" name="_subject" value="New CreditPulse Enquiry 🚀"/>
+      <input type="hidden" name="_next" value="https://creditsystemv1.streamlit.app"/>
+      <input type="hidden" name="_template" value="table"/>
+
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Your Name</label>
-          <input type="text" class="form-input" placeholder="Rajan Gupta" required/>
+          <input type="text" name="name" class="form-input" placeholder="Rajan Gupta" required/>
         </div>
         <div class="form-group">
-          <label class="form-label">WhatsApp Number</label>
-          <input type="tel" class="form-input" placeholder="+91 9439493613" required/>
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-input" placeholder="rajan@example.com" required/>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Business Name</label>
-        <input type="text" class="form-input" placeholder="Rajan Traders, Nagpur"/>
+        <input type="text" name="business" class="form-input" placeholder="Rajan Traders, Nagpur"/>
       </div>
       <div class="form-group">
         <label class="form-label">I am interested in</label>
-        <select class="form-select">
+        <select name="interest" class="form-select">
           <option>CreditPulse for my wholesale business</option>
           <option>Custom dashboard / automation for my business</option>
           <option>Both — CreditPulse + custom work</option>
@@ -1187,13 +1198,13 @@
       </div>
       <div class="form-group">
         <label class="form-label">Message (optional)</label>
-        <textarea class="form-textarea" placeholder="Tell me about your business — how many customers, what software you use, what problem you want to solve..."></textarea>
+        <textarea name="message" class="form-textarea" placeholder="Tell me about your business — how many customers, what software you use, what problem you want to solve..."></textarea>
       </div>
       <button type="submit" class="form-submit">Send Message →</button>
     </form>
 
     <div class="form-success" id="formSuccess">
-      ✓ Message sent! I'll reply on WhatsApp within 24 hours.
+      ✓ Message sent! I'll reply to your email within 24 hours.
     </div>
   </div>
 </section>
@@ -1271,31 +1282,6 @@
 
   const rv = document.getElementById('riskVisual');
   if (rv) riskObs.observe(rv);
-
-  // ── Form Submit ────────────────────────────────────────────────────────────
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name    = this.querySelector('input[type="text"]').value;
-    const phone   = this.querySelector('input[type="tel"]').value;
-    const biz     = this.querySelectorAll('input[type="text"]')[1]?.value || '';
-    const interest= this.querySelector('select').value;
-    const message = this.querySelector('textarea').value;
-
-    // Build WhatsApp message
-    const wa = encodeURIComponent(
-      `Hi Sanskar! I found CreditPulse.\n\n` +
-      `Name: ${name}\n` +
-      `Business: ${biz || 'Not specified'}\n` +
-      `Interested in: ${interest}\n` +
-      (message ? `Message: ${message}` : '')
-    );
-
-    // Open WhatsApp — replace with your actual number
-    window.open(`https://wa.me/?text=${wa}`, '_blank');
-
-    this.style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
-  });
 
   // ── Smooth scroll for nav links ────────────────────────────────────────────
   document.querySelectorAll('a[href^="#"]').forEach(a => {
